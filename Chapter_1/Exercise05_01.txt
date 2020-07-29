@@ -1,0 +1,18 @@
+/** The equals method for the Computer class
+    Exercise 1.5.1
+  */
+@Override
+public boolean equals(Computer computer) {
+  if (computer == this)
+    return true;
+  if (computer == null)
+    return false;
+  if (this.getClass() == computer.getClass()) {
+    Computer other = (Computer) computer;
+    return ((manufacturer.equals(other.getManufacturer()) && processor.equals(other.getprocessor()) 
+            && ((ramSize == other.getRamSize()) && (diskSize == other.getDiskSize())
+            && (processorSpeed == other.getProcessorSpeed()))));
+  } else {
+    return false;
+  }
+}
