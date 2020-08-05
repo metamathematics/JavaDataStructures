@@ -6,6 +6,11 @@ public class Student extends Person {
   private String graduationYear;
 
   // Contructors
+  /** Default Constructor. */
+  public Student() {
+    this(null, null, 0, 'O', null, null, null);
+  }
+
   /** Contructs a Student with the given attributes.
     */
 

@@ -11,6 +11,11 @@ public class Employee extends Person {
   private double annualSalary;
 
   // Constructors
+  /** Default Contructor. */
+  public Employee() {
+    this(null, null, 0, 'O', null, null, null, null, null, false, 0f, 0f, 0f, 0.0);
+  }
+
   /** Creates a Salary Employee.
       @param name The name
       @param ssn The social
