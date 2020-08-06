@@ -17,12 +17,38 @@ import java.util.Scanner;
 
 /** Collects information on Students and Employees. */
 public class MainFX extends Application {
-private int width = 320;
-private int height = 350;
+private int width;
+private int height;
 private Person[] people;
-//private PersonPane ppane;
-private VBox spane;
-//private EmployeePane epane;
+private StudentPane sPane;
+//private EmployeePane ePane;
+private Button btNext;
+private int state;
+TextField tfStudentOrEmployee;
+Text tRecord;
+Text tContinue;
+Text tStudent;
+Text tEmployee;
+Text blank;
+
+  public MainFX() {
+   width = 400;
+   height = 150;
+   sPane = new StudentPane();
+   btNext = new Button("NEXT");
+   state = 0;
+   tfStudentOrEmployee = new TextField();
+   tfStudentOrEmployee.setPrefColumnCount(1);
+   tRecord = new Text();
+   tRecord.setFont(new Font(25));
+   tContinue = new Text();
+   tContinue.setFont(new Font(25));
+   tStudent = new Text("Student");
+   tStudent.setFont(new Font(20));
+   tEmployee = new Text("Employee");
+   tEmployee.setFont(new Font(20));
+   blank = new Text("");
+  }
 
   /** Overrides the start method from the Application class. */
   @Override
@@ -32,92 +58,101 @@ private VBox spane;
     int numberOfRecords = input.nextInt();
     people = new Person[numberOfRecords];
 
-    GridPane gpane1 = new GridPane();
-    gpane1.setPadding(new Insets(5, 5, 5, 5));
-    gpane1.setHgap(5);
-    gpane1.setVgap(5);
-
-    gpane1.add(new Label("Name:"), 0, 1);
-    gpane1.add(new TextField(), 1, 1);
-    gpane1.add(new Label("SSN (xxx-xx-xxxx):"), 0, 2);
-    gpane1.add(new TextField(), 1, 2);
-    gpane1.add(new Label("Address:"), 0, 3);
-    gpane1.add(new TextField(), 1, 3);
-
-    TextField tfType = new TextField();
-    tfType.setPrefColumnCount(1);
-    TextField tfSex = new TextField();
-    tfSex.setPrefColumnCount(1);
-    TextField tfAge = new TextField();
-    tfAge.setPrefColumnCount(2);
-    
-    HBox hbox1 = new HBox(5);
-    hbox1.setAlignment(Pos.CENTER_RIGHT);
-    hbox1.getChildren().addAll(new Label("Gender:"), tfSex, new Label("Age:"), tfAge);
-    HBox hbox2 = new HBox(5);
-    hbox2.setAlignment(Pos.CENTER_RIGHT);
-    hbox2.getChildren().addAll(new Label("Student or Employee (S/E):"), tfType);
-    
-    VBox vbox1 = new VBox(5);
-    vbox1.getChildren().addAll(gpane1, hbox1, hbox2);
-    
-    Button btContinue = new Button("Continue");
-    VBox vbox2 = new VBox(5);
-    vbox2.setPadding(new Insets(8, 5, 5, 5));
-    vbox2.setAlignment(Pos.CENTER_RIGHT);
-    vbox2.getChildren().add(btContinue);
-
     BorderPane pane = new BorderPane();
     pane.setPadding(new Insets(8, 5, 5, 5));
-    Text text = new Text("Record 1");
-    text.setFont(new Font(15));
-    pane.setTop(text);
-    pane.setCenter(vbox1);
-    pane.setBottom(vbox2);
-
-    Button btNext = new Button("Next");
-
-    btContinue.setOnAction(e -> {
-      String type = tfType.getText();
-      if (type.equalsIgnoreCase("S"))
-        spane = getStudentPane();
-        spane.getChildren().add(btNext);
-        pane.setBottom(spane);
-    });
+    setHeader(pane, tRecord, new Text(""), new Text(""));
+    pane.setBottom(btNext);
+    pane.setAlignment(btNext, Pos.CENTER_RIGHT);
 
     Scene scene = new Scene(pane, width, height);
     primaryStage.setTitle("Persons of Interest");
     primaryStage.setScene(scene);
     primaryStage.show();
+
+    for (int index = 0; index < people.length; index++) {
+      tRecord.setText(String.format("Record %d", index + 1));
+      firstQuestion(pane);
+
+      btNext.setOnAction(e -> {
+        if (state == 1) {
+          if (tfStudentOrEmployee.getText().equalsIgnoreCase("S")) {
+            state = 2;
+            setHeader(pane, tRecord, tStudent, blank);
+            pane.setCenter(sPane);
+            width = 575;
+            height = 275;
+            primaryStage.setWidth(width);
+            primaryStage.setHeight(height);
+          }
+        }
+      });
+      declarePerson(state, index);
+    }
   }
 
-  public VBox getStudentPane(){
+  public void declarePerson(int state, int index) {
+    if (state == 1)
+      people[index] = new Student();
+    else
+      people[index] = new Employee();
 
-    GridPane gpane = new GridPane();
-    gpane.setPadding(new Insets(5, 5, 5, 5));
-    gpane.setHgap(5);
-    Label lMajor = new Label("Major:");
-    TextField tfMajor = new TextField();
-    gpane.add(lMajor, 0, 0);
-    gpane.add(tfMajor, 1, 0);
-    gpane.setAlignment(Pos.CENTER_RIGHT);
-    
-    HBox hbox2 = new HBox(5);
-    hbox2.setAlignment(Pos.CENTER_RIGHT);
+    state = 0;
+  }
 
-    TextField tfGPA = new TextField();
-    tfGPA.setPrefColumnCount(2);
-    TextField tfYearOfGrad = new TextField();
-    tfYearOfGrad.setPrefColumnCount(4);
-
-    hbox2.getChildren().addAll(new Label("Year of Graduation:"), tfYearOfGrad, new Label("GPA:"), tfGPA);
-
+  public void setHeader(BorderPane pane, Text top, Text middle, Text bottom) {
     VBox vbox = new VBox(5);
-    vbox.setAlignment(Pos.CENTER_RIGHT);
-    vbox.setPadding(new Insets(5, 5, 5, 5));
-    vbox.getChildren().addAll(gpane, hbox2);
+    vbox.getChildren().addAll(top, middle, bottom);
+    pane.setTop(vbox);
+  }
 
-    return vbox;
+  public void firstQuestion(BorderPane pane) {
+    state = 1;
+    HBox hbox = new HBox(5);
+    hbox.getChildren().addAll(new Label("Student or Employee (S/E):"), tfStudentOrEmployee);
+    hbox.setAlignment(Pos.CENTER);
+    pane.setCenter(hbox);
+  }
+
+  public class StudentPane extends GridPane {
+    
+    private TextField tfName = new TextField();
+    private TextField tfSSN = new TextField();
+    private TextField tfAddress = new TextField();
+    private TextField tfType = new TextField();
+    private TextField tfSex = new TextField();
+    private TextField tfAge = new TextField();
+    private TextField tfPhone = new TextField();
+    private TextField tfGPA = new TextField();
+    private TextField tfYearOfGrad = new TextField();
+
+
+
+    public StudentPane() {
+      setPadding(new Insets(5, 5, 5, 5));
+      setHgap(5);
+      setVgap(5);
+      
+      tfSex.setPrefColumnCount(1);
+      tfAge.setPrefColumnCount(2);
+      tfGPA.setPrefColumnCount(2);
+      tfYearOfGrad.setPrefColumnCount(3);
+
+      add(new Label("Name:"), 0, 0);
+      add(tfName, 1, 0);
+      add(new Label("SSN (xxx-xx-xxxx):"), 0, 1);
+      add(tfSSN, 1, 1);
+      add(new Label("Address:"), 0, 2);
+      add(tfAddress, 1, 2);
+      add(new Label("Phone:"), 0, 3);
+      add(tfPhone, 1, 3);
+
+      add(new Label("\tAge:"), 2, 0);
+      add(tfAge, 3, 0);
+      add(new Label("\tGender (M/F/O):"), 2, 1);
+      add(tfSex, 3, 1);
+      add(new Label("\tGraduation Year (YYYY):"), 2, 2);
+      add(tfYearOfGrad, 3, 2);
+    }
   }
 
   /** The main method. */
