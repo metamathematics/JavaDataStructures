@@ -17,26 +17,24 @@ import java.util.Scanner;
 
 /** Collects information on Students and Employees. */
 public class MainFX extends Application {
-private int width;
-private int height;
 private Person[] people;
+private BorderPane pane;
 private StudentPane sPane;
 //private EmployeePane ePane;
-private Button btNext;
-private int state;
-TextField tfStudentOrEmployee;
-Text tRecord;
-Text tContinue;
-Text tStudent;
-Text tEmployee;
-Text blank;
+private Button[] btNext;
+private TextField tfStudentOrEmployee;
+private Text tRecord;
+private Text tContinue;
+private Text tStudent;
+private Text tEmployee;
+private Text blank;
 
   public MainFX() {
-   width = 400;
-   height = 150;
+   pane = new BorderPane();
    sPane = new StudentPane();
-   btNext = new Button("NEXT");
-   state = 0;
+   btNext = new Button[4];
+   declareButtons();
+
    tfStudentOrEmployee = new TextField();
    tfStudentOrEmployee.setPrefColumnCount(1);
    tRecord = new Text();
@@ -58,62 +56,66 @@ Text blank;
     int numberOfRecords = input.nextInt();
     people = new Person[numberOfRecords];
 
-    BorderPane pane = new BorderPane();
     pane.setPadding(new Insets(8, 5, 5, 5));
-    setHeader(pane, tRecord, new Text(""), new Text(""));
-    pane.setBottom(btNext);
-    pane.setAlignment(btNext, Pos.CENTER_RIGHT);
+    setHeader(tRecord, blank, new Text(""));
+    setButton(0);
 
-    Scene scene = new Scene(pane, width, height);
+    Scene scene = new Scene(pane, 400, 150);
     primaryStage.setTitle("Persons of Interest");
     primaryStage.setScene(scene);
     primaryStage.show();
 
     for (int index = 0; index < people.length; index++) {
       tRecord.setText(String.format("Record %d", index + 1));
-      firstQuestion(pane);
+      firstEntry();
 
-      btNext.setOnAction(e -> {
-        if (state == 1) {
-          if (tfStudentOrEmployee.getText().equalsIgnoreCase("S")) {
-            state = 2;
-            setHeader(pane, tRecord, tStudent, blank);
-            pane.setCenter(sPane);
-            width = 575;
-            height = 275;
-            primaryStage.setWidth(width);
-            primaryStage.setHeight(height);
-          }
-        }
+      btNext[0].setOnAction(e -> {        
+       boolean student = tfStudentOrEmployee.getText().equalsIgnoreCase("S");
+       boolean employee = tfStudentOrEmployee.getText().equalsIgnoreCase("E");
+       if (student) {
+         setHeader(tRecord, tStudent, blank);
+         pane.setCenter(sPane);
+         primaryStage.setWidth(575);
+         primaryStage.setHeight(275);
+         setButton(3);
+       }        
       });
-      declarePerson(state, index);
+      declarePerson(index);
     }
   }
 
-  public void declarePerson(int state, int index) {
-    if (state == 1)
+  private void setButton(int index) {
+    pane.setBottom(btNext[index]);
+    pane.setAlignment(btNext[index], Pos.CENTER_RIGHT);
+  }
+
+  private void declareButtons() {
+    for (int i = 0; i < btNext.length; i++)
+      btNext[i] = new Button("NEXT");
+  }
+
+  private void declarePerson(int index) {
+    boolean student = tfStudentOrEmployee.getText().equalsIgnoreCase("S");
+    if (student)
       people[index] = new Student();
     else
       people[index] = new Employee();
-
-    state = 0;
   }
 
-  public void setHeader(BorderPane pane, Text top, Text middle, Text bottom) {
+  private void setHeader(Text top, Text middle, Text bottom) {
     VBox vbox = new VBox(5);
     vbox.getChildren().addAll(top, middle, bottom);
     pane.setTop(vbox);
   }
 
-  public void firstQuestion(BorderPane pane) {
-    state = 1;
+  private void firstEntry() {
     HBox hbox = new HBox(5);
     hbox.getChildren().addAll(new Label("Student or Employee (S/E):"), tfStudentOrEmployee);
     hbox.setAlignment(Pos.CENTER);
     pane.setCenter(hbox);
   }
 
-  public class StudentPane extends GridPane {
+  private class StudentPane extends GridPane {
     
     private TextField tfName = new TextField();
     private TextField tfSSN = new TextField();
@@ -127,7 +129,7 @@ Text blank;
 
 
 
-    public StudentPane() {
+    private StudentPane() {
       setPadding(new Insets(5, 5, 5, 5));
       setHgap(5);
       setVgap(5);
@@ -143,7 +145,7 @@ Text blank;
       add(tfSSN, 1, 1);
       add(new Label("Address:"), 0, 2);
       add(tfAddress, 1, 2);
-      add(new Label("Phone:"), 0, 3);
+      add(new Label("Phone (xxx-xxxx):"), 0, 3);
       add(tfPhone, 1, 3);
 
       add(new Label("\tAge:"), 2, 0);
