@@ -4,14 +4,14 @@ public class Person {
   private String name;
   private String ssn;
   private int age;
-  private char gender;
+  private String gender;
   private String address;
   private String phone;
 
   // Constructors
   /** Default Constructor. */
   public Person() {
-    this("J. Doe", "000-00-0000", 30, 'O', "132 Boogie Ave", "(555) 555-5555");
+    this("J. Doe", "000-00-0000", 30, "O", "132 Boogie Ave", "(555) 555-5555");
   }
 
   /** Creates a Pearson with the given attributes.
@@ -22,7 +22,7 @@ public class Person {
       @param address The address
       @param phone The phone number
     */
-  public Person(String name, String ssn, int age, char gender, String address, String phone) {
+  public Person(String name, String ssn, int age, String gender, String address, String phone) {
     this.name = name;
     this.ssn = ssn;
     this.age = age;
@@ -60,7 +60,7 @@ public class Person {
   /** Returns the gender of this Person.
       @param The gender
     */
-  public char getGender() {
+  public String getGender() {
     return gender;
   }
 
@@ -108,7 +108,7 @@ public class Person {
   /** Sets the gender of this Person.
       @param gender The gender
     */
-  public void setGender(char gender) {
+  public void setGender(String gender) {
     this.gender = gender;
   }
 
@@ -132,7 +132,7 @@ public class Person {
   /** The String representation of this Person. */
   @Override
   public String toString() {
-    return String.format("name: %s \nssn: %s \nage: %d \nsex: %c \naddress: %s \nphone: %s\n",
+    return String.format("name: %s \nssn: %s \nage: %d \nsex: %s \naddress: %s \nphone: %s\n",
                           name, ssn, age, gender, address, phone);
   }
 }

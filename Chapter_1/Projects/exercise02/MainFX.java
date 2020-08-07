@@ -28,11 +28,14 @@ private Text tContinue;
 private Text tStudent;
 private Text tEmployee;
 private Text blank;
+private Person individual;
+private boolean isStudent;
+private int index;
 
   public MainFX() {
    pane = new BorderPane();
    sPane = new StudentPane();
-   btNext = new Button[4];
+   btNext = new Button[6];
    declareButtons();
 
    tfStudentOrEmployee = new TextField();
@@ -46,6 +49,7 @@ private Text blank;
    tEmployee = new Text("Employee");
    tEmployee.setFont(new Font(20));
    blank = new Text("");
+   index = 0;
   }
 
   /** Overrides the start method from the Application class. */
@@ -64,24 +68,63 @@ private Text blank;
     primaryStage.setTitle("Persons of Interest");
     primaryStage.setScene(scene);
     primaryStage.show();
+      
+    tRecord.setText(String.format("Record %d", index + 1));
+    tContinue.setText(String.format("Record %d (continued)", index + 1));
+    firstEntry();
 
-    for (int index = 0; index < people.length; index++) {
-      tRecord.setText(String.format("Record %d", index + 1));
-      firstEntry();
+    btNext[0].setOnAction(e -> {        
+     boolean student = tfStudentOrEmployee.getText().equalsIgnoreCase("S");
+     boolean employee = tfStudentOrEmployee.getText().equalsIgnoreCase("E");
+     isStudentObject(student);
+     System.out.println("student: " + student);
 
-      btNext[0].setOnAction(e -> {        
-       boolean student = tfStudentOrEmployee.getText().equalsIgnoreCase("S");
-       boolean employee = tfStudentOrEmployee.getText().equalsIgnoreCase("E");
-       if (student) {
-         setHeader(tRecord, tStudent, blank);
-         pane.setCenter(sPane);
-         primaryStage.setWidth(575);
-         primaryStage.setHeight(275);
-         setButton(3);
-       }        
-      });
-      declarePerson(index);
+     if (student) { 
+       System.out.println(index);
+       declarePerson();
+       setHeader(tContinue, tStudent, blank);
+       pane.setCenter(sPane);
+       primaryStage.setWidth(575);
+       primaryStage.setHeight(310);
+       setButton(1);
+     }   
+    });
+
+    btNext[1].setOnAction(e -> {
+        
+      individual.setName(sPane.tfName.getText());
+      individual.setSocial(sPane.tfSSN.getText());
+      individual.setAddress(sPane.tfAddress.getText());
+      individual.setPhone(sPane.tfPhone.getText());
+      individual.setAge(Integer.parseInt(sPane.tfAge.getText()));
+      individual.setGender(sPane.tfSex.getText());
+      ((Student) individual).setGpa(Float.parseFloat(sPane.tfGPA.getText()));
+      ((Student) individual).setGradYear(sPane.tfYearOfGrad.getText());
+      ((Student) individual).setMajor(sPane.tfMajor.getText());
+
+      if (index < people.length) {
+        tRecord.setText(String.format("Record %d", index + 1));
+        tContinue.setText(String.format("Record %d (continued)", index + 1));
+        setHeader(tRecord, blank, new Text(""));
+        setButton(0);
+        firstEntry();
+      } else {
+        primaryStage.close();
+        printInfo();
+      }
+    });
+  }
+
+  private void printInfo() {
+    for (int i = 0; i < people.length; i++) {
+      System.out.println();
+      System.out.println(people[i].toString());
+      System.out.println();
     }
+  }
+
+  private void isStudentObject(boolean answer) {
+    isStudent = answer;
   }
 
   private void setButton(int index) {
@@ -94,12 +137,18 @@ private Text blank;
       btNext[i] = new Button("NEXT");
   }
 
-  private void declarePerson(int index) {
-    boolean student = tfStudentOrEmployee.getText().equalsIgnoreCase("S");
-    if (student)
+  private void declarePerson() {
+    //student = true
+    System.out.println("isStudent: " + isStudent);
+    if (isStudent) {
       people[index] = new Student();
-    else
+      individual = people[index];
+      index++;
+    } else {
       people[index] = new Employee();
+      individual = people[index];
+      index++;
+    }
   }
 
   private void setHeader(Text top, Text middle, Text bottom) {
@@ -118,6 +167,7 @@ private Text blank;
   private class StudentPane extends GridPane {
     
     private TextField tfName = new TextField();
+    private TextField tfMajor = new TextField();
     private TextField tfSSN = new TextField();
     private TextField tfAddress = new TextField();
     private TextField tfType = new TextField();
@@ -126,8 +176,6 @@ private Text blank;
     private TextField tfPhone = new TextField();
     private TextField tfGPA = new TextField();
     private TextField tfYearOfGrad = new TextField();
-
-
 
     private StudentPane() {
       setPadding(new Insets(5, 5, 5, 5));
@@ -141,19 +189,23 @@ private Text blank;
 
       add(new Label("Name:"), 0, 0);
       add(tfName, 1, 0);
-      add(new Label("SSN (xxx-xx-xxxx):"), 0, 1);
-      add(tfSSN, 1, 1);
-      add(new Label("Address:"), 0, 2);
-      add(tfAddress, 1, 2);
-      add(new Label("Phone (xxx-xxxx):"), 0, 3);
-      add(tfPhone, 1, 3);
+      add(new Label("Major:"), 0, 1);
+      add(tfMajor, 1, 1);
+      add(new Label("SSN (xxx-xx-xxxx):"), 0, 2);
+      add(tfSSN, 1, 2);
+      add(new Label("Address:"), 0, 3);
+      add(tfAddress, 1, 3);
+      add(new Label("Phone (xxx-xxxx):"), 0, 4);
+      add(tfPhone, 1, 4);
 
       add(new Label("\tAge:"), 2, 0);
       add(tfAge, 3, 0);
       add(new Label("\tGender (M/F/O):"), 2, 1);
       add(tfSex, 3, 1);
-      add(new Label("\tGraduation Year (YYYY):"), 2, 2);
-      add(tfYearOfGrad, 3, 2);
+      add(new Label("\tGPA:"), 2, 2);
+      add(tfGPA, 3, 2);
+      add(new Label("\tGraduation Year (YYYY):"), 2, 3);
+      add(tfYearOfGrad, 3, 3);
     }
   }
 

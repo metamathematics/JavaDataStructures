@@ -13,7 +13,14 @@ public class Employee extends Person {
   // Constructors
   /** Default Contructor. */
   public Employee() {
-    this(null, null, 0, 'O', null, null, null, null, null, false, 0f, 0f, 0f, 0.0);
+    super();
+    department = null;
+    title = null;
+    yearHired = null;
+    hourlyRate = 0f;
+    hoursWorked = 0f;
+    unionDues = 0f;
+    annualSalary = 0.0;
   }
 
   /** Creates a Salary Employee.
@@ -28,7 +35,7 @@ public class Employee extends Person {
       @param yearHired The year hired
       @param annualSalary The annual salary
     */
-  public Employee(String name, String ssn, int age, char gender,String address, 
+  public Employee(String name, String ssn, int age, String gender, String address, 
                   String phone, String department, String title, String yearHired,
                   double annualSalary) {
   
@@ -50,7 +57,7 @@ public class Employee extends Person {
       @param hoursWorked The total hours worked
       @param unionDues The total union dues owed
     */  
-  public Employee(String name, String ssn, int age, char gender,String address, 
+  public Employee(String name, String ssn, int age, String gender,String address, 
                   String phone, String department, String title, String yearHired,
                   float hourlyRate, float hoursWorked, float unionDues) {
   
@@ -74,7 +81,7 @@ public class Employee extends Person {
       @param unionDues The total union dues owed
       @param annualSalary The annual salary
     */
-  public Employee(String name, String ssn, int age, char gender,String address, 
+  public Employee(String name, String ssn, int age, String gender,String address, 
                   String phone, String department, String title, String yearHired,
                   boolean salaried, float hourlyRate, float hoursWorked, 
                   float unionDues, double annualSalary) {

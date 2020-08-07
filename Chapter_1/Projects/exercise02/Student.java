@@ -8,13 +8,16 @@ public class Student extends Person {
   // Contructors
   /** Default Constructor. */
   public Student() {
-    this(null, null, 0, 'O', null, null, null);
+    super();
+    gpa = 0f;
+    major = null;
+    graduationYear = null;
   }
 
   /** Contructs a Student with the given attributes.
     */
 
-  public Student(String name, String ssn, int age, char gender, String address,
+  public Student(String name, String ssn, int age, String gender, String address,
                  String phone, String major) {
 
     this(name, ssn, age, gender, address, phone, 0f, major, null);
@@ -22,7 +25,7 @@ public class Student extends Person {
 
   /** Contructs a Student with the given attributes.
     */
-  public Student(String name, String ssn, int age, char gender, String address,
+  public Student(String name, String ssn, int age, String gender, String address,
                  String phone, float gpa, String major, String gradulationYear) {
 
     super(name, ssn, age, gender, address, phone);
