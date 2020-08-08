@@ -20,7 +20,7 @@ public class MainFX extends Application {
 private Person[] people;
 private BorderPane pane;
 private StudentPane sPane;
-//private EmployeePane ePane;
+private EmployeePane ePane;
 private Button[] btNext;
 private TextField tfStudentOrEmployee;
 private Text tRecord;
@@ -35,6 +35,7 @@ private int index;
   public MainFX() {
    pane = new BorderPane();
    sPane = new StudentPane();
+   ePane = new EmployeePane();
    btNext = new Button[6];
    declareButtons();
 
@@ -77,17 +78,25 @@ private int index;
      boolean student = tfStudentOrEmployee.getText().equalsIgnoreCase("S");
      boolean employee = tfStudentOrEmployee.getText().equalsIgnoreCase("E");
      isStudentObject(student);
-     System.out.println("student: " + student);
 
      if (student) { 
-       System.out.println(index);
        declarePerson();
        setHeader(tContinue, tStudent, blank);
        pane.setCenter(sPane);
        primaryStage.setWidth(575);
        primaryStage.setHeight(310);
        setButton(1);
-     }   
+     } else if (employee) {
+       declarePerson();
+       setHeader(tContinue, tEmployee, blank);
+       pane.setCenter(ePane);
+       ePane.page1();
+       primaryStage.setWidth(510);
+       primaryStage.setHeight(270);
+       setButton(2);
+     }
+
+     tfStudentOrEmployee.clear();
     });
 
     btNext[1].setOnAction(e -> {
@@ -112,6 +121,28 @@ private int index;
         primaryStage.close();
         printInfo();
       }
+      sPane.clearTextFields();
+    });
+
+    btNext[2].setOnAction(e -> {
+      ePane.removePage1();
+      ePane.page2();
+      primaryStage.setWidth(525);
+      setButton(3);
+    });
+
+    btNext[3].setOnAction(e -> {
+      ePane.removePage2();
+      ePane.page3();
+      primaryStage.setWidth(690);
+      primaryStage.setHeight(200);
+      setButton(4);
+    });
+
+    btNext[4].setOnAction(e -> {
+      ePane.removePage3();
+      primaryStage.setWidth(300);
+      ePane.page4();
     });
   }
 
@@ -138,8 +169,6 @@ private int index;
   }
 
   private void declarePerson() {
-    //student = true
-    System.out.println("isStudent: " + isStudent);
     if (isStudent) {
       people[index] = new Student();
       individual = people[index];
@@ -207,6 +236,153 @@ private int index;
       add(new Label("\tGraduation Year (YYYY):"), 2, 3);
       add(tfYearOfGrad, 3, 3);
     }
+
+    private void clearTextFields() {
+      tfName.clear();
+      tfMajor.clear();
+      tfSSN.clear();
+      tfAddress.clear();
+      tfType.clear();
+      tfSex.clear();
+      tfAge.clear();
+      tfPhone.clear();
+      tfGPA.clear();
+      tfYearOfGrad.clear();
+    }
+  }
+
+  private class EmployeePane extends GridPane {
+
+    private TextField tfName = new TextField();
+    private TextField tfMajor = new TextField();
+    private TextField tfSSN = new TextField();
+    private TextField tfAddress = new TextField();
+    private TextField tfSex = new TextField();
+    private TextField tfAge = new TextField();
+    private TextField tfPhone = new TextField();
+    private TextField tfDepartment = new TextField();
+    private TextField tfTitle = new TextField();
+    private TextField tfHourlyOrSalary = new TextField();
+    private TextField tfYearHired = new TextField();
+    private TextField tfHourlyRate = new TextField();
+    private TextField tfHoursWorked = new TextField();
+    private TextField tfUnionDues = new TextField();
+    private TextField tfAnnualSalary = new TextField();
+
+    private Label lName = new Label("Name:");
+    private Label lSSN = new Label("SSN (xxx-xx-xxxx):");
+    private Label lAddress = new Label("Address:");
+    private Label lPhone = new Label("Phone (xxx-xxxx):");
+    private Label lAge = new Label("\tAge:");
+    private Label lSex = new Label("\tGender (M/F/O):");
+    private Label lDepartment = new Label("Department:");
+    private Label lTitle = new Label("Job Title:");
+    private Label lHourlyOrSalary = new Label("\tHourly or Salary (H/S):");
+    private Label lYearHired = new Label("\tYear Hired (YYYY):");
+    private Label lHourlyRate = new Label("Hourly Rate (xx.xx):");
+    private Label lHoursWorked = new Label("\tHours Worked (xx.xx):");
+    private Label lUnionDues = new Label("\tUnion Dues (xx.xx)");
+    private Label lAnnualSalary = new Label("Annual Salary:");
+
+    private EmployeePane() {
+      setPadding(new Insets(5, 5, 5, 5));
+      setHgap(5);
+      setVgap(5);
+
+      tfAge.setPrefColumnCount(2);
+      tfSex.setPrefColumnCount(1);
+      tfHourlyOrSalary.setPrefColumnCount(3);
+      tfYearHired.setPrefColumnCount(3);
+      tfHourlyRate.setPrefColumnCount(3);
+      tfHoursWorked.setPrefColumnCount(3);
+      tfUnionDues.setPrefColumnCount(4);
+      tfAnnualSalary.setPrefColumnCount(6);      
+    }
+
+    private void page1() {
+      add(lName, 0, 0);
+      add(tfName, 1, 0);
+      add(lSSN, 0, 1);
+      add(tfSSN, 1, 1);
+      add(lAddress, 0, 2);
+      add(tfAddress, 1, 2);
+      add(lPhone, 0, 3);
+      add(tfPhone, 1, 3);
+
+      add(lAge, 2, 0);
+      add(tfAge, 3, 0);
+      add(lSex, 2, 1);
+      add(tfSex, 3, 1);
+    }
+
+    private void page2() {
+      add(lDepartment, 0, 0);
+      add(tfDepartment, 1, 0);
+      add(lTitle, 0, 1);
+      add(tfTitle, 1, 1);
+
+      add(lHourlyOrSalary, 2, 0);
+      add(tfHourlyOrSalary, 3, 0);
+      add(lYearHired, 2, 1);
+      add(tfYearHired, 3, 1);
+    }
+
+    private void page3() {
+      add(lHourlyRate, 0, 0);
+      add(tfHourlyRate, 1, 0);
+
+      add(lHoursWorked, 2, 0);
+      add(tfHoursWorked, 3, 0);
+
+      add(lUnionDues, 4, 0);
+      add(tfUnionDues, 5, 0);
+    }
+
+    private void page4() {
+      add(lAnnualSalary, 1, 0);
+      add(tfAnnualSalary, 2, 0);
+    }
+
+    private void removePage1() {
+      getChildren().remove(lName);
+      getChildren().remove(lSSN);
+      getChildren().remove(lAddress);
+      getChildren().remove(lPhone);
+      getChildren().remove(lAge);
+      getChildren().remove(lSex);
+
+      getChildren().remove(tfName);
+      getChildren().remove(tfSSN);
+      getChildren().remove(tfAddress);
+      getChildren().remove(tfPhone);
+      getChildren().remove(tfAge);
+      getChildren().remove(tfSex);
+    }
+
+    private void removePage2() {
+      getChildren().remove(lDepartment);
+      getChildren().remove(lTitle);
+      getChildren().remove(lHourlyOrSalary);
+      getChildren().remove(lYearHired);
+
+      getChildren().remove(tfDepartment);
+      getChildren().remove(tfTitle);
+      getChildren().remove(tfHourlyOrSalary);
+      getChildren().remove(tfYearHired);
+    }
+
+    private void removePage3() {
+      
+      getChildren().remove(lHourlyRate);
+      getChildren().remove(tfHourlyRate);
+
+      getChildren().remove(lHoursWorked);
+      getChildren().remove(tfHoursWorked);
+
+      getChildren().remove(lUnionDues);
+      getChildren().remove(tfUnionDues);
+    }
+  
   }
 
   /** The main method. */
