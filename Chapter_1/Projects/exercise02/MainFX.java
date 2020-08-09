@@ -117,6 +117,8 @@ private int index;
         setHeader(tRecord, blank, new Text(""));
         setButton(0);
         firstEntry();
+        primaryStage.setWidth(400);
+        primaryStage.setHeight(160);
       } else {
         primaryStage.close();
         printInfo();
@@ -125,6 +127,14 @@ private int index;
     });
 
     btNext[2].setOnAction(e -> {
+
+      individual.setName(ePane.tfName.getText());
+      individual.setSocial(ePane.tfSSN.getText());
+      individual.setAddress(ePane.tfAddress.getText());
+      individual.setPhone(ePane.tfPhone.getText());
+      individual.setAge(Integer.parseInt(ePane.tfAge.getText()));
+      individual.setGender(ePane.tfSex.getText());
+
       ePane.removePage1();
       ePane.page2();
       primaryStage.setWidth(525);
@@ -132,17 +142,68 @@ private int index;
     });
 
     btNext[3].setOnAction(e -> {
+      
+      ((Employee) individual).setDepartment(ePane.tfDepartment.getText());
+      ((Employee) individual).setTitle(ePane.tfTitle.getText());
+      ((Employee) individual).setSalaried(ePane.tfHourlyOrSalary.getText());
+      ((Employee) individual).setYearHired(ePane.tfYearHired.getText());
+
+      boolean hourly = ePane.tfHourlyOrSalary.getText().equalsIgnoreCase("H");
+      boolean salary = ePane.tfHourlyOrSalary.getText().equalsIgnoreCase("S");
       ePane.removePage2();
-      ePane.page3();
-      primaryStage.setWidth(690);
-      primaryStage.setHeight(200);
-      setButton(4);
+      if (hourly) {
+        ePane.page3();
+        primaryStage.setWidth(690);
+        primaryStage.setHeight(200);
+        setButton(4);
+      } else if (salary) {
+        primaryStage.setWidth(300);
+        primaryStage.setHeight(200);
+        ePane.page4();
+        setButton(5);
+      }
     });
 
     btNext[4].setOnAction(e -> {
+      
+      ((Employee) individual).setHourlyRate(Float.parseFloat(ePane.tfHourlyRate.getText()));
+      ((Employee) individual).setHoursWorked(Float.parseFloat(ePane.tfHoursWorked.getText()));
+      ((Employee) individual).setUnionDues(Float.parseFloat(ePane.tfUnionDues.getText()));
+
       ePane.removePage3();
-      primaryStage.setWidth(300);
-      ePane.page4();
+      if (index < people.length) {
+        primaryStage.setWidth(400);
+        primaryStage.setHeight(160);
+        tRecord.setText(String.format("Record %d", index + 1));
+        tContinue.setText(String.format("Record %d (continued)", index + 1));
+        setHeader(tRecord, blank, new Text(""));
+        setButton(0);
+        firstEntry();
+      } else {
+        primaryStage.close();
+        printInfo();
+      }
+      ePane.clearTextFields();
+    });
+
+    btNext[5].setOnAction(e -> {
+
+      ((Employee) individual).setAnnualSalary(ePane.tfAnnualSalary.getText());
+      
+      ePane.removePage4();
+      if (index < people.length) {
+        primaryStage.setWidth(400);
+        primaryStage.setHeight(160);
+        tRecord.setText(String.format("Record %d", index + 1));
+        tContinue.setText(String.format("Record %d (continued)", index + 1));
+        setHeader(tRecord, blank, new Text(""));
+        setButton(0);
+        firstEntry();
+      } else {
+        primaryStage.close();
+        printInfo();
+      }
+      ePane.clearTextFields();
     });
   }
 
@@ -194,12 +255,12 @@ private int index;
   }
 
   private class StudentPane extends GridPane {
-    
+   
+    private TextField tfType = new TextField();
     private TextField tfName = new TextField();
     private TextField tfMajor = new TextField();
     private TextField tfSSN = new TextField();
     private TextField tfAddress = new TextField();
-    private TextField tfType = new TextField();
     private TextField tfSex = new TextField();
     private TextField tfAge = new TextField();
     private TextField tfPhone = new TextField();
@@ -299,6 +360,23 @@ private int index;
       tfAnnualSalary.setPrefColumnCount(6);      
     }
 
+    private void clearTextFields() {
+      tfName.clear();
+      tfSSN.clear();
+      tfAddress.clear();
+      tfPhone.clear();
+      tfSex.clear();
+      tfAge.clear();
+      tfDepartment.clear();
+      tfTitle.clear();
+      tfHourlyOrSalary.clear();
+      tfYearHired.clear();
+      tfHourlyRate.clear();
+      tfHoursWorked.clear();
+      tfUnionDues.clear();
+      tfAnnualSalary.clear();
+    }
+
     private void page1() {
       add(lName, 0, 0);
       add(tfName, 1, 0);
@@ -381,6 +459,11 @@ private int index;
 
       getChildren().remove(lUnionDues);
       getChildren().remove(tfUnionDues);
+    }
+
+    private void removePage4() {
+      getChildren().remove(lAnnualSalary);
+      getChildren().remove(tfAnnualSalary);
     }
   
   }

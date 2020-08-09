@@ -4,11 +4,11 @@ public class Employee extends Person {
   private String department;
   private String title;
   private String yearHired;
-  private boolean salaried;
+  private String hourlyOrSalary;
   private float hourlyRate;
   private float hoursWorked;
   private float unionDues;
-  private double annualSalary;
+  private String annualSalary;
 
   // Constructors
   /** Default Contructor. */
@@ -20,7 +20,7 @@ public class Employee extends Person {
     hourlyRate = 0f;
     hoursWorked = 0f;
     unionDues = 0f;
-    annualSalary = 0.0;
+    annualSalary = "0.0";
   }
 
   /** Creates a Salary Employee.
@@ -37,10 +37,10 @@ public class Employee extends Person {
     */
   public Employee(String name, String ssn, int age, String gender, String address, 
                   String phone, String department, String title, String yearHired,
-                  double annualSalary) {
+                  String annualSalary) {
   
     this(name, ssn, age, gender, address, phone, department, 
-          title, yearHired, true, 0f, 0f, 0f, annualSalary);
+          title, yearHired, "S", 0f, 0f, 0f, annualSalary);
   }
 
   /** Creates an Hourly Employee.
@@ -62,7 +62,7 @@ public class Employee extends Person {
                   float hourlyRate, float hoursWorked, float unionDues) {
   
     this(name, ssn, age, gender, address, phone, department, 
-          title, yearHired, false, hourlyRate, hoursWorked, unionDues, 0.0);
+          title, yearHired, "H", hourlyRate, hoursWorked, unionDues, "0.0");
   }
 
   /** Creates an Employee with all attributes.
@@ -75,7 +75,7 @@ public class Employee extends Person {
       @param department The department
       @param title The job title
       @param yearHired The year hired
-      @param salaried Is this Empolyee salaried?
+      @param hourlyOrSalary H if hourly, S if salary?
       @param hourlyRate The pay per hour
       @param hoursWorked The total hours worked
       @param unionDues The total union dues owed
@@ -83,14 +83,14 @@ public class Employee extends Person {
     */
   public Employee(String name, String ssn, int age, String gender,String address, 
                   String phone, String department, String title, String yearHired,
-                  boolean salaried, float hourlyRate, float hoursWorked, 
-                  float unionDues, double annualSalary) {
+                  String hourlyOrSalary, float hourlyRate, float hoursWorked, 
+                  float unionDues, String annualSalary) {
   
     super(name, ssn, age, gender, address, phone);
     this.department = department;
     this.title = title;
     this.yearHired = yearHired;
-    this.salaried = salaried;
+    this.hourlyOrSalary = hourlyOrSalary;
     this.hourlyRate = hourlyRate;
     this.hoursWorked = hoursWorked;
     this.unionDues = unionDues;
@@ -123,12 +123,11 @@ public class Employee extends Person {
   }
 
 
-  /** Returns True/False if this Employee is salaried/hourly.
-      True - if so; False if hourly.
-      @return True, if salaried. False, if hourly
+  /** Returns H if hourly, S if salary.
+      @return "H" or "S" if hourly or salary
     */
-  public boolean isSalaried() {
-    return salaried;
+  public String getHourlyOrSalary() {
+    return hourlyOrSalary;
   }
 
 
@@ -159,7 +158,7 @@ public class Employee extends Person {
   /** Return this Employee's annual salary.
       @return The annual salary
     */
-  public double getAnnualSalary() {
+  public String getAnnualSalary() {
     return annualSalary;
   }
 
@@ -188,12 +187,11 @@ public class Employee extends Person {
   }
 
 
-  /** Sets True/False if this Employee is salaried/hourly.
-      True - if so; False if hourly.
-      @param salaried True, if salaried. False, if hourly
+  /** Sets "H" if hourly, "S" if salary.
+      @param hourlyOrSalary "H" or "S" if hourly or salary
     */
-  public void setSalaried(boolean salaried) {
-    this.salaried = salaried;
+  public void setSalaried(String hourlyOrSalary) {
+    this.hourlyOrSalary = hourlyOrSalary;
   }
 
 
@@ -208,7 +206,7 @@ public class Employee extends Person {
   /** Sets this Employees's total hours worked.
       @param hoursWorked The hours worked
     */
-  public void getHoursWorked(float hoursWorked) {
+  public void setHoursWorked(float hoursWorked) {
     this.hoursWorked = hoursWorked;
   }
 
@@ -224,7 +222,7 @@ public class Employee extends Person {
   /** Sets this Employee's annual salary.
       @param annualSalary The annual salary
     */
-  public void setAnnualSalary(double annualSalary) {
+  public void setAnnualSalary(String annualSalary) {
     this.annualSalary = annualSalary;
   }
 
@@ -232,11 +230,13 @@ public class Employee extends Person {
   /** String representation of this Employee. */
   @Override
   public String toString() {
-    return super.toString() + String.format("department: %s \ntitle: %s \nhire year: %s\n",
-                                            department, title, yearHired) +
-                              String.format("salaried: %b \nhourly rate: %.2f \nhours worked: %.2f\n",
-                                            salaried, hourlyRate, hoursWorked) + 
-                              String.format("union dues: %.2f \nannual salary: %.2f",
-                                            unionDues, annualSalary);
+    return String.format("Employee\n_________\n") + 
+           super.toString() + 
+           String.format("department: %s \ntitle: %s \nhire year: %s\n",
+                         department, title, yearHired) +
+           String.format("hourly rate: %.2f \nhours worked: %.2f\n",
+                         hourlyRate, hoursWorked) + 
+           String.format("union dues: %.2f \nannual salary: %s",
+                         unionDues, annualSalary);
   }
 }

@@ -88,7 +88,9 @@ public class Student extends Person {
   /** The string representation of this Student. */
   @Override
   public String toString() {
-    return super.toString() + String.format("gpa: %.1f \nmajor: %s \nyear of graduation: %s",
-                                             gpa, major, graduationYear);
+    return String.format("Student\n_________\n") + 
+           super.toString() + 
+           String.format("gpa: %.1f \nmajor: %s \nyear of graduation: %s", 
+                         gpa, major, graduationYear);
   }
 }
