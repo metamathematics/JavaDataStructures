@@ -1,0 +1,6 @@
+/** Deletes the first occurrence of target in aList. */
+public static void delete(ArrayList<String> aList, String target) {
+  int index = aList.indexOf(target);
+  if (index != -1)
+    aList.remove(index);
+}

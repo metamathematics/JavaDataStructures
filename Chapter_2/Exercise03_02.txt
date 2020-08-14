@@ -1,0 +1,17 @@
+/** Remove an entry.
+    @param aName The name of the person being removed
+    @return The entry removed, or null if there is no entry for aName
+  */
+public DirectoryEntry removeEntry(String aName) {
+  
+  int index = theDirectory.indexOf(new DirectoryEntry(aName, ""));
+
+  DirectoryEntry removedEntry = null;
+
+  if (index != -1) {
+    removedEntry = theDirectory.get(index);
+    theDirectory.remove(index);
+  }
+  
+  return removedEntry;
+}

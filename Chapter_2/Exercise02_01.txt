@@ -1,0 +1,10 @@
+/** Replaces each occurance of oldItem in aList with newItem */
+public static void replace(ArrayList<String> aList, String oldItem, String newItem) {
+  int index = 0;
+  while (index != -1) {
+    index = aList.indexOf(oldItem);
+    if (index != -1) {
+      aList.set(index, newItem);
+    }
+  }
+}

@@ -1,0 +1,26 @@
+/** Add an entry to theDirectory or change an existing entry.
+    @param aName The name of the person being added or changed
+    @param newNumber The new number to be assigned
+    @return The old number, or if a new entry, null
+  */
+public String addOrChangeEntry(String aName, String newNumber) {
+
+  // Check if the name is already in the directory
+  int index = theDirectory.indexOf(new DirectoryEntry(aName, ""));
+  
+  int oldNumber = null;
+
+  // If the name is in, update the number
+  if (index != -1) {
+    DirectoryEntry dE = theDirectory.get(index);
+    oldNumber = dE.getNumber();
+    dE.setNumber(newNumber);
+
+  // else add the name and the number
+  } else {
+    theDirectory.add(new DirectoryEntry(aName, newNumber));
+  }
+
+  return oldNumber;
+
+}
