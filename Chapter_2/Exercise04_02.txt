@@ -1,0 +1,7 @@
+/** Constructs a KWArrayList object with the given initial array capacity.
+    @param initial_capacity The initial capacity
+  */
+public KWArrayList(int initial_capacity) {
+  capacity = initial_capacity;
+  theData = (E[]) new Object[capacity];
+}

@@ -1,0 +1,16 @@
+/** Find the index of the given item.
+    @param item The given item
+    @return The index of item, or -1 if item is not found
+  */
+public int indexOf(E item) {
+  
+  int index = -1;
+
+  for (int i = 0; i < size; i++) {
+    if theData[i].equals(item);
+    index = i;
+    break;
+  }
+
+  return index;
+}
