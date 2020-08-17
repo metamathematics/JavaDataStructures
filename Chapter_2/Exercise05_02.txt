@@ -1,0 +1,6 @@
+/** Returns the size of the linked list.
+    @return The size
+  */
+public int size() {
+  return size;
+}

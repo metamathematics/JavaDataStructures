@@ -1,0 +1,21 @@
+/** Remove the first occurence of element item.
+    @param item The item to be removed
+    @return true If item is found and removed; otherwise return false
+  */
+public boolean remove(E item) {
+  boolean returnValue = false;
+  for (int index = 0; index < size; index++) {
+    Node<E> node = getNode(index);
+    if (node.data.equals(item)) {
+      if (index == 0) {
+        removeFirst();
+        returnValue = true;
+      } else {
+        Node<E> prevNode = getNode(index - 1);
+        removeAfter(prevNode);
+        returnValue = true;
+      }
+    }
+  }
+  return returnValue;
+}

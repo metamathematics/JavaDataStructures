@@ -1,0 +1,13 @@
+/** Searches for the target and returns its position in the list.
+    @param target The target
+    @return The position in the list, or -1 if not in the list
+  */
+public int indexOf(E target) {
+  for (int index = 0; index < size; index ++) {
+    Node<E> node = getNode(index);
+    if (node.data.equals(target)) {
+      return index;
+    }
+  }
+  return -1;
+}

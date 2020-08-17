@@ -1,0 +1,13 @@
+// Insert Bill before Tom
+head = new Node<>("Bill", head);
+
+// Insert Sue before Sam
+Node<String> node = getNode(3);
+node.next = new Node<>("Sue", node.next);
+
+// Remove Bill
+removeFirst();
+
+// Remove Sam
+Node<String> node = getNode(size - 2); // Sue's node
+removeAfter(node);

@@ -1,0 +1,21 @@
+/** Removes the entry at position index and returns it.
+    @param index The index
+    @return The data removed
+    @throws IndexOutOfBoundsException If index it out of range
+  */
+public E remove(int index) {
+
+  if (index < 0 || index >= size)
+    throw new IndexOutOfBoundsException(Integer.toString(index));
+
+  E removedData = null;
+
+  if (index == 0) {
+    removedData = removeFirst();
+  } else {
+    Node<E> node = getNode(index - 1);
+    removedData = removeAfter(node);
+  }
+
+  return removedData;
+}
