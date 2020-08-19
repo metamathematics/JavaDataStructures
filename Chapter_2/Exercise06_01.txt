@@ -1,0 +1,20 @@
+// a. Insert Bill before Tom
+Node<String> node = head;
+head = new Node<>("Bill");
+head.next = node;
+node.prev = head;
+
+// b. Insert Sue before Sam
+Node<String> node = new Node<>("Sue");
+node.next = tail;
+node.prev = tail.prev;
+tail.prev.next = node;
+tail.prev = node;
+
+// c. Remove Bill
+head = head.next;
+head.prev = null;
+
+// d. Remove Sam
+tail = tail.prev;
+tail.next = null;
