@@ -1,0 +1,16 @@
+/** Returns the index of the minimum item in a list. */
+public int indexOfMin() {
+  ListIterator<E> iter = list.listIterator();
+
+  int index = nextIndex();
+  E min = iter.next();
+
+  while (iter.hasNext()) {
+    E temp = iter.next();
+    if (min.compareTo(temp) > 0) {
+      min = temp;
+      index = iter.previousIndex();
+    }
+  }
+  return index;
+}

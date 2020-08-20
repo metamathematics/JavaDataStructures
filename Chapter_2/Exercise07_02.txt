@@ -1,0 +1,14 @@
+/** Return the index of the last occurrence of target, or -1 if not in the list
+    @param target The target
+    @return The index of the last occurence of target of -1 if not in the list
+  */
+public int lastIndexOf(E target) {
+  int index = -1;
+  ListIteratory<E> iter = list.listInterface();
+  while (iter.hasNext()) {
+    if (target.equals(iter.next())) {
+      index = iter.previousIndex();
+    }
+  }
+  return index;
+}

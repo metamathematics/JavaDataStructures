@@ -1,0 +1,14 @@
+/** Searches for target and returns the position of the first occurrence, or -1 if not in the List
+    @param target The target to be search
+    @return The position of the first occurrence of target, or -1 if not in the List
+  */
+public int indexOf(E target) {
+  ListIterator<E> iter = list.listIterator();
+  while (iter.hasNext()) {
+    int index = iter.nextIndex();
+    if (target.equals(iter.next())) {
+      return index;
+    }
+  }
+  return -1;
+}
