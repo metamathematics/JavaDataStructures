@@ -1,0 +1,26 @@
+/** Insert obj into the list preserving the list's order.
+    @pre The items in the list are ordered.
+    @post obj has been inserted into the list
+          such that the items are still in order.
+    @param obj The item to be inserted
+  */
+public void add(E obj) {
+  ListIterator<E> iter = theList.listIterator(theList.size());
+    // Find the insertion position and insert.
+    while (iter.hasPrevious()) {
+      if (obj.compateTo(iter.previous()) > 0) {
+        // Iterator has stepped over the first element
+        // that is less than the element to be inserted.
+        // Move the iterator forward one.
+        iter.next();
+        // Insert the element.
+        iter.add(obj);
+        // Exit the loop and return.
+        return;
+      }
+    }
+    // assert: All items were examined and no item is smaller than
+    // the element to be inserted.
+    // Add the new item to the front of the list.
+    iter.add(obj);
+}
